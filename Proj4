@@ -1,0 +1,58 @@
+// Proj4.java																				//
+// AJ Snow / Lab Section C Fridays 3:30 - 5:30 												//
+// 					//
+// 						//
+//		//	
+// 										//
+// 						//
+// 		//
+//			//
+
+
+
+import java.util.*
+
+public class Proj4 {
+	public static void main (String[] args){
+		Scanner keyboard = new Scanner(System.in); 
+		
+		//Variables Here
+		int [] wordsneededis10; 				//need to accept any formatted text file. 
+		int currentScore;
+		int total Score; 
+		
+		
+		
+		Random wordSelector = new Random(); 	//first line provides size of array, then starts adding words to array
+		Random wordScrambler = new Random(); 
+		
+		
+		System.out.println("Hi! Welcome to my letter jumbler game! Please select a file to be used so I can jumble words for you!"); 
+		
+		//Randomly select a word to jumble
+		//Jumble the words
+		//If the word jumbles back to itself, jumble again
+		//Let the users guess, quit, get a hint, or get a new word
+		//
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		keyboard.close(); 
+	}//end main
+}//end class
