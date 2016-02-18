@@ -10,24 +10,79 @@
 
 
 
-import java.util.*
+import java.util.*;
 
 public class Proj4 {
 	public static void main (String[] args){
 		Scanner keyboard = new Scanner(System.in); 
 		
 		//Variables Here
-		int [] wordsneededis10; 				//need to accept any formatted text file. 
-		int currentScore;
-		int total Score; 
+		//int [] wordsneededis10; 				//need to accept any formatted text file. 
+		//String[] testword = "Debauchery".split("");
+		String testWord = "Debauchery"; 
+	//	String input; 
+		//String[] jumbledWord = new String[testWord.length()]; 
+		char[] testArray = testWord.toCharArray(); 
 		
 		
+		int wordLength = testWord.length(); 
+	//	int currentScore;
+	//	int totalScore; 
 		
-		Random wordSelector = new Random(); 	//first line provides size of array, then starts adding words to array
+		
+		int countWord;
+		int countJumble; 
+		
+		int swap; 
+		
+		
+		char letterSwap; 
+		
+	//	Random wordSelector = new Random(); 	//first line provides size of array, then starts adding words to array
 		Random wordScrambler = new Random(); 
+	//	Random hintGiver = new Random(); 
+		
+		
+		
+		
+		
+		
+		//Begin Here
+		
+		
+		
 		
 		
 		System.out.println("Hi! Welcome to my letter jumbler game! Please select a file to be used so I can jumble words for you!"); 
+		
+		System.out.println("Just kidding we're not that far yet!\nTry to guess this word!"); 
+		
+		for(countWord = testWord.length() - 1; countWord > 1; countWord--){
+			letterSwap = testWord.charAt(countWord); 
+			
+			//jumbledWord = String.valueOf(letterSwap); 
+			
+			//jumbledWord[countWord] = Character.toString(letterSwap);  
+			
+			System.out.println("Test Array: " + String.valueOf(testArray)); 
+		//	System.out.println(jumbledWord);
+					
+				//	for (countJumble = 0; countJumble < jumbledWord.length; countJumble++){
+	
+					//}
+			
+			
+			System.out.println(letterSwap); 
+			
+		}//end for count
+		
+		
+		
+		System.out.println(testWord); 
+		//System.out.println(testword); 
+		System.out.println(wordLength); 
+		
+		
 		
 		//Randomly select a word to jumble
 		//Jumble the words
@@ -56,3 +111,5 @@ public class Proj4 {
 		keyboard.close(); 
 	}//end main
 }//end class
+
+
