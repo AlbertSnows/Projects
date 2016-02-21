@@ -92,7 +92,6 @@ public class Proj4 {
 
 		
 		//Variables Here
-		String testWord = "dog"; 
 		
 	/*	
 		System.out.print("Here is your scrambled word: ");
@@ -131,50 +130,50 @@ public class Proj4 {
 
 	   while (inputLetter!= 'q'){
 		   
-		   System.out.print("Here is your jumbled word: " );
+		   	System.out.print("Here is your jumbled word: " );
 			System.out.println(jumbledWord);
+			System.out.print("Original word: ");
+			System.out.println(wordFromFile);
+			System.out.print("Current points for word: " + currentScore);
+			System.out.println();
 			System.out.print("To begin. Enter (g)uess, (h)int, (n)ew word, or (q)uit: "); 
 			inputWord = keyboard.nextLine().toLowerCase(); 
 			inputLetter = inputWord.charAt(0); 
 			
-			System.out.print("Current points for word: " + currentScore);
-			System.out.println();
-			System.out.print("Enter (g)uess, (n)ew word, (h)int, or (q)uit: "); 
-			inputLetter = keyboard.nextLine().charAt(0); 
-			System.out.println();
+			
 		   
-		if (inputLetter == 'g'){
-		   while (inputLetter != 0)
-			{
-			System.out.print("Enter your guess: ");
-			inputWord = keyboard.nextLine().toLowerCase(); 
-			System.out.println(inputWord); 
-			System.out.println(testWord); 
-	
-						if (inputWord == testWord) //NOT WORKING???
+		if (inputLetter == 'g')
+					{
+							while (inputLetter != 0)
 							{
-								System.out.println("Good Job! On to the next word!");
-								totalScore += currentScore; 
-								System.out.println("Score for this word: " + currentScore);
-								System.out.println("Total Score: " + totalScore);
-								inputLetter = 0; 
+							   System.out.print("Enter your guess: ");
+							   inputWord = keyboard.nextLine().toLowerCase(); 
+							   System.out.println(inputWord); 
+							   System.out.println(wordFromFile);
+							   
+								if (inputWord == wordFromFile) //NOT WORKING???
+								{
+									System.out.println("Good Job! On to the next word!");
+									totalScore += currentScore; 
+									System.out.println("Score for this word: " + currentScore);
+									System.out.println("Total Score: " + totalScore);
+									inputLetter = 0; 
+								}
+								else 
+								{ 
+									System.out.println("Sorry! Try again!");
+									if (currentScore > 0){
+										currentScore--; }
+									System.out.println("Current score: " + currentScore);
+								}
 							}
-						else 
-							{ 
-								System.out.println("Sorry! Try again!");
-								if (currentScore > 0){
-								currentScore--; }
-								System.out.println("Current score: " + currentScore);
-								
-							}
-						}
 						}
 		else if (inputLetter == 'n'){
-			//
+			//PULL NEW WORD
 			}
 		else if (inputLetter == 'h'){
-				hint = hintGiver.nextInt(testWord.length());
-				hintLetter = testWord.charAt(hint); 
+				hint = hintGiver.nextInt(wordFromFile.length());
+				hintLetter = wordFromFile.charAt(hint); 
 				System.out.println("The letter at spot " + hint + " is " + hintLetter);
 				currentScore = currentScore/2; 
 				inputLetter = 0; 
