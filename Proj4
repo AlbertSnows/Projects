@@ -1,110 +1,99 @@
+
 // Proj4.java																				//
 // AJ Snow / Lab Section C Fridays 3:30 - 5:30 												//
-// 					//
 // 						//
-//		//	
-// 										//
 // 						//
-// 		//
-//			//
+//						//	
+// 						//
+// 						//
+// 						//
+//						//
 
 
 
 import java.util.*;
+import java.io.*; 
+
 
 public class Proj4 {
-	public static void main (String[] args){
+	public static void main (String[] args) throws IOException{
 		Scanner keyboard = new Scanner(System.in); 
+
+		//VARIABLES TO PULL TEXT FILE
+		//String testWord = "Lucky"; 
+		String input; 
+		String wordFromFile; 
+		String fileName = "words.txt"; 
 		
-		//Variables Here
-		//int [] wordsneededis10; 				//need to accept any formatted text file. 
-		//String[] testword = "Debauchery".split("");
-		String testWord = "Debauchery"; 
-	//	String input; 
-		//String[] jumbledWord = new String[testWord.length()]; 
-		char[] testArray = testWord.toCharArray(); 
+		int numOfWords; 
+		int numOfWordsCount = 0; 
+		int wordFromArray; 
+		
+		Scanner fileReader = new Scanner(new FileReader(fileName)); 
+		numOfWords = Integer.parseInt(fileReader.nextLine()); 		//Holds the value of the number of words
+		
+		//VARIABLES TO POPULATE AND SELECT A WORD FROM THE LIST
+		String[] wordList = new String[numOfWords]; 
+		
+		while (fileReader.hasNext()){
+			wordList[numOfWordsCount] = fileReader.nextLine(); 
+			numOfWordsCount++; 	
+		}															//Populates wordList
+
+		Random wordSelector = new Random();	
+		wordFromArray = wordSelector.nextInt(numOfWords);
+		wordFromFile = wordList[wordFromArray]; 		
+		
+		//PROGRAM VARIABLES HERE
+		boolean[] checkPlace = new boolean[numOfWords]; 			//Keeps letters from being placed in same spot
+		char[] jumbledWord = new char[numOfWords]; 
 		
 		
-		int wordLength = testWord.length(); 
-	//	int currentScore;
-	//	int totalScore; 
+		Random wordScrambler = new Random(); 
+		Random hintGiver = new Random(); 
 		
-		
+		int wordLength = wordFromFile.length(); 
+		//int currentScore;
+		//int totalScore; 
 		int countWord;
 		int countJumble; 
 		
-		int swap; 
-		
-		
-		char letterSwap; 
-		
-	//	Random wordSelector = new Random(); 	//first line provides size of array, then starts adding words to array
-		Random wordScrambler = new Random(); 
-	//	Random hintGiver = new Random(); 
+		char tempLetter; 
 		
 		
 		
 		
+		//PROGRAM HERE
 		
+
+		System.out.println("Hi! Welcome to my letter jumbler game!"); 
 		
-		//Begin Here
-		
-		
-		
-		
-		
-		System.out.println("Hi! Welcome to my letter jumbler game! Please select a file to be used so I can jumble words for you!"); 
-		
-		System.out.println("Just kidding we're not that far yet!\nTry to guess this word!"); 
-		
-		for(countWord = testWord.length() - 1; countWord > 1; countWord--){
-			letterSwap = testWord.charAt(countWord); 
+		for(countWord = 0; countWord < wordLength; countWord++) {
 			
-			//jumbledWord = String.valueOf(letterSwap); 
+			tempLetter = wordFromFile.charAt(countWord); 
+			countJumble = wordScrambler.nextInt(wordLength); 
 			
-			//jumbledWord[countWord] = Character.toString(letterSwap);  
-			
-			System.out.println("Test Array: " + String.valueOf(testArray)); 
-		//	System.out.println(jumbledWord);
-					
-				//	for (countJumble = 0; countJumble < jumbledWord.length; countJumble++){
-	
-					//}
+			if (countWord == countJumble){
+				if ((countWord+1) == wordLength && checkPlace[countJumble] == false){
+					jumbledWord[countJumble] = tempLetter; 
+					checkPlace[countJumble] = true;
+				}
+				else {countWord--; }
+			}			
+			else if (checkPlace[countJumble] == false)
+			{
+			jumbledWord[countJumble] = tempLetter; 
+			checkPlace[countJumble] = true;
+			}
+			else { countWord--; }
 			
 			
-			System.out.println(letterSwap); 
-			
-		}//end for count
+		}//end for loop randomizer
 		
-		
-		
-		System.out.println(testWord); 
-		//System.out.println(testword); 
-		System.out.println(wordLength); 
-		
-		
-		
-		//Randomly select a word to jumble
-		//Jumble the words
-		//If the word jumbles back to itself, jumble again
-		//Let the users guess, quit, get a hint, or get a new word
-		//
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		System.out.print("Try to guess this word: " ); 
+		System.out.println(jumbledWord); 
+		System.out.println(); 
+		System.out.println("Original Word: " + wordFromFile); 
 		
 		
 		
@@ -113,3 +102,166 @@ public class Proj4 {
 }//end class
 
 
+/*// Proj4.java																				//
+// AJ Snow / Lab Section C Fridays 3:30 - 5:30 												//
+// 						//
+// 						//
+//						//	
+// 						//
+// 						//
+// 						//
+//						//
+
+
+//package words.txt; 
+
+import java.util.*;
+import java.io.IOException; 
+import java.io.FileReader; 
+import java.io.BufferedReader; 
+
+public class Proj4 {
+	public static void main (String[] args) throws IOException{
+		Scanner keyboard = new Scanner(System.in); 
+		//public FileReader (String words.txt) {
+	//		path = words.txt; 
+		//}
+		
+		String inputWord; 
+		char input = 0; 
+	//	FileReader readFile = new FileReader(words.txt);  
+		
+		
+		//Variables Here
+		String testWord = "dog"; 
+		char[] jumbledWord = testWord.toCharArray(); 
+		boolean[] checkPlace = new boolean[testWord.length()]; 
+		
+		
+		int wordLength = testWord.length(); 
+		
+		int currentScore;
+		int totalScore =0; 
+		
+		
+		int countWord;
+		int reJumble; 
+		int swap = 0; 
+		
+		
+		char letterSwap = 0; 
+		
+		Random wordSelector = new Random(); 	//first line provides size of array, then starts adding words to array
+		Random wordScrambler = new Random(); 
+		Random hintGiver = new Random(); 
+		int hint; 
+		char hintLetter; 
+		
+		
+		
+		
+		//Begin Here
+		
+		
+//HOW TO KEEP WORD FROM BEING THE SAME? 
+		
+		
+		System.out.println("Hi! Welcome to my letter jumbler game!"); 
+		System.out.print("Here is your scrambled word: ");
+		
+		for(countWord = 0; countWord <= testWord.length()-1; countWord++){
+			
+			
+			letterSwap = testWord.charAt(countWord); 
+			swap = wordScrambler.nextInt(testWord.length()) ;			
+				
+			if (jumbledWord.toString() == testWord ){
+				countWord = 0; 
+				for (reJumble = 0; reJumble < checkPlace.length; reJumble++ )
+					{
+						checkPlace[reJumble] = false; 
+					}
+			}
+			 if (checkPlace[swap] != true ){
+				jumbledWord[swap] = letterSwap; 
+				checkPlace[swap] = true; 
+				
+			}
+			else {countWord--; }
+		
+		
+			
+		}//end for count
+		
+		System.out.println(jumbledWord);
+
+		   currentScore = 10; 
+
+		
+
+	   while (input != 'q'){
+		   
+			System.out.print("Current points for word: " + currentScore);
+			System.out.println();
+			System.out.print("Enter (g)uess, (n)ew word, (h)int, or (q)uit: "); 
+			input = keyboard.nextLine().charAt(0); 
+			System.out.println();
+		   
+		if (input == 'g'){
+		   while (input != 0)
+			{
+			System.out.print("Enter your guess: ");
+			inputWord = keyboard.nextLine().toLowerCase(); 
+			System.out.println(inputWord); 
+			System.out.println(testWord); 
+	
+						if (inputWord == testWord) //NOT WORKING???
+							{
+								System.out.println("Good Job! On to the next word!");
+								totalScore += currentScore; 
+								System.out.println("Score for this word: " + currentScore);
+								System.out.println("Total Score: " + totalScore);
+								input = 0; 
+							}
+						else 
+							{ 
+								System.out.println("Sorry! Try again!");
+								if (currentScore > 0){
+								currentScore--; }
+								System.out.println("Current score: " + currentScore);
+								
+							}
+						}
+						}
+		else if (input == 'n'){
+			//
+			}
+		else if (input == 'h'){
+				hint = hintGiver.nextInt(testWord.length());
+				hintLetter = testWord.charAt(hint); 
+				System.out.println("The letter at spot " + hint + " is " + hintLetter);
+				currentScore = currentScore/2; 
+				input = 0; 
+			}//end input while
+		else
+			{ 
+			 System.out.println("Error! Only press the keys 'g', 'n', 'h', 'q'.");
+			input = 0; 
+
+			}
+	   	
+	   }//end while loop
+	   
+	    if (input == 'q'){
+			System.out.println("Goodbye!");
+			System.out.println("Final Score: " + totalScore);
+	   }
+		
+		
+		
+		keyboard.close(); 
+	}//end main
+}//end class
+
+
+*/
