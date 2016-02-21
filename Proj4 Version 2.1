@@ -1,0 +1,208 @@
+
+// Proj4.java																				//
+// AJ Snow / Lab Section C Fridays 3:30 - 5:30 												//
+// 						//
+// 						//
+//						//	
+// 						//
+// 						//
+// 						//
+//						//
+
+
+
+import java.util.*;
+import java.io.*; 
+
+public class Proj4 {
+	public static void main (String[] args) throws IOException{
+		Scanner keyboard = new Scanner(System.in); 
+		String inputWord; 
+		char inputLetter; 
+		
+		//VARIABLES TO PULL TEXT FILE
+		String wordFromFile; 
+		String fileName = "words.txt"; 
+		
+		int numOfWords; 
+		int numOfWordsCount = 0; 
+		int wordFromArray; 
+		
+		Scanner fileReader = new Scanner(new FileReader(fileName)); 
+		numOfWords = Integer.parseInt(fileReader.nextLine()); 		//Holds the value of the number of words
+		
+		//VARIABLES TO POPULATE AND SELECT A WORD FROM THE LIST
+		String[] wordList = new String[numOfWords]; 
+		
+		while (fileReader.hasNext()){
+			wordList[numOfWordsCount] = fileReader.nextLine(); 
+			numOfWordsCount++; 	
+		}															//Populates wordList
+
+		Random wordSelector = new Random();	
+		wordFromArray = wordSelector.nextInt(numOfWords);
+		wordFromFile = wordList[wordFromArray]; 		
+		
+		//PROGRAM VARIABLES HERE
+		boolean[] checkPlace = new boolean[numOfWords]; 			//Keeps letters from being placed in same spot
+		char[] jumbledWord = new char[numOfWords]; 
+		
+		
+		Random wordScrambler = new Random(); 
+		Random hintGiver = new Random(); 
+		
+		int wordLength = wordFromFile.length(); 
+		int countWord;
+		int countJumble;
+		int currentScore;
+		int totalScore = 0; 
+		//int reJumble; 
+		//int swap = 0; 
+		int hint; 
+
+		char tempLetter; 
+		//char letterSwap = 0; 
+		char hintLetter; 	
+		
+		//PROGRAM HERE
+		System.out.println("Hi! Welcome to my letter jumbler game!"); 
+		
+		for(countWord = 0; countWord < wordLength; countWord++) {
+			
+			tempLetter = wordFromFile.charAt(countWord); 
+			countJumble = wordScrambler.nextInt(wordLength); 
+			
+			if (countWord == countJumble){
+				if ((countWord+1) == wordLength && checkPlace[countJumble] == false){
+					jumbledWord[countJumble] = tempLetter; 
+					checkPlace[countJumble] = true;
+				}
+				else {countWord--; }
+			}			
+			else if (checkPlace[countJumble] == false)
+			{
+			jumbledWord[countJumble] = tempLetter; 
+			checkPlace[countJumble] = true;
+			}
+			else { countWord--; }
+			
+			
+		}//end for loop randomizer
+		
+
+		
+		//Variables Here
+		String testWord = "dog"; 
+		
+	/*	
+		System.out.print("Here is your scrambled word: ");
+		
+		for(countWord = 0; countWord <= testWord.length()-1; countWord++){
+			
+			
+			letterSwap = testWord.charAt(countWord); 
+			swap = wordScrambler.nextInt(testWord.length()) ;			
+				
+			if (jumbledWord.toString() == testWord ){
+				countWord = 0; 
+				for (reJumble = 0; reJumble < checkPlace.length; reJumble++ )
+					{
+						checkPlace[reJumble] = false; 
+					}
+			}
+			 if (checkPlace[swap] != true ){
+				jumbledWord[swap] = letterSwap; 
+				checkPlace[swap] = true; 
+				
+			}
+			else {countWord--; }
+		
+		
+			
+		}//end for count
+		
+		System.out.println(jumbledWord);
+*/
+		
+		   currentScore = 10; 
+
+	
+		inputLetter = 0; 
+
+	   while (inputLetter!= 'q'){
+		   
+		   System.out.print("Here is your jumbled word: " );
+			System.out.println(jumbledWord);
+			System.out.print("To begin. Enter (g)uess, (h)int, (n)ew word, or (q)uit: "); 
+			inputWord = keyboard.nextLine().toLowerCase(); 
+			inputLetter = inputWord.charAt(0); 
+			
+			System.out.print("Current points for word: " + currentScore);
+			System.out.println();
+			System.out.print("Enter (g)uess, (n)ew word, (h)int, or (q)uit: "); 
+			inputLetter = keyboard.nextLine().charAt(0); 
+			System.out.println();
+		   
+		if (inputLetter == 'g'){
+		   while (inputLetter != 0)
+			{
+			System.out.print("Enter your guess: ");
+			inputWord = keyboard.nextLine().toLowerCase(); 
+			System.out.println(inputWord); 
+			System.out.println(testWord); 
+	
+						if (inputWord == testWord) //NOT WORKING???
+							{
+								System.out.println("Good Job! On to the next word!");
+								totalScore += currentScore; 
+								System.out.println("Score for this word: " + currentScore);
+								System.out.println("Total Score: " + totalScore);
+								inputLetter = 0; 
+							}
+						else 
+							{ 
+								System.out.println("Sorry! Try again!");
+								if (currentScore > 0){
+								currentScore--; }
+								System.out.println("Current score: " + currentScore);
+								
+							}
+						}
+						}
+		else if (inputLetter == 'n'){
+			//
+			}
+		else if (inputLetter == 'h'){
+				hint = hintGiver.nextInt(testWord.length());
+				hintLetter = testWord.charAt(hint); 
+				System.out.println("The letter at spot " + hint + " is " + hintLetter);
+				currentScore = currentScore/2; 
+				inputLetter = 0; 
+			}//end input while
+		else if (inputLetter == 'q')
+			{
+				System.out.println("Goodbye!");
+				System.out.println("Final Score: " + totalScore);
+				System.exit(0);
+			}
+		else 
+			{ 
+			 System.out.println("Error! Only press the keys 'g', 'n', 'h', 'q'.");
+			 inputLetter = 0; 
+			}
+	   	
+	   }//end while loop
+	   
+		
+		System.out.println("Original Word: " + wordFromFile); 
+		
+		
+		fileReader.close(); 
+		keyboard.close(); 
+	}//end main
+}//end class
+
+
+
+
+	
