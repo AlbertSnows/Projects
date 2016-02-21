@@ -127,7 +127,7 @@ public class Proj4 {
 									
 									for(countWord = 0; countWord < wordLength; countWord++) {
 										
-										tempLetter = wordFromFile.charAt(countWord); 
+										tempLetter = wordFromFile.charAt(countWord); //ERROR HERE???
 										countJumble = wordScrambler.nextInt(wordLength); 
 										
 										if (countWord == countJumble){
@@ -166,7 +166,7 @@ public class Proj4 {
 			
 			for(countWord = 0; countWord < wordLength; countWord++) {
 				
-				tempLetter = wordFromFile.charAt(countWord); 
+				tempLetter = wordFromFile.charAt(countWord); //ERROR HERE
 				countJumble = wordScrambler.nextInt(wordLength); 
 				
 				if (countWord == countJumble){
