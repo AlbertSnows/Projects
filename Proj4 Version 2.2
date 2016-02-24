@@ -22,7 +22,18 @@ public class Proj4 {
 		
 		//VARIABLES TO PULL TEXT FILE
 		String wordFromFile; 
-		String fileName = "words.txt"; 
+		String fileName; 
+		
+		System.out.println("Enter the file you would like this program to pull from."); 
+		System.out.println("Make sure this file is in the proper directory: "); 
+		System.out.println("If you don't know what file to use, try 'words.txt'"); 
+		System.out.print("Enter your response here: "); 
+		
+		fileName = keyboard.nextLine(); 
+		
+		//String fileName = "words.txt"; 
+		
+		System.out.println(); 
 		
 		int numOfWords; 
 		int numOfWordsCount = 0; 
@@ -124,10 +135,11 @@ public class Proj4 {
 									
 									wordFromArray = wordSelector.nextInt(numOfWords); //Select new word
 									wordFromFile = wordList[wordFromArray]; 
+									wordLength = wordFromFile.length();
 									
 									for(countWord = 0; countWord < wordLength; countWord++) {
 										
-										tempLetter = wordFromFile.charAt(countWord); //ERROR HERE???
+										tempLetter = wordFromFile.charAt(countWord); 
 										countJumble = wordScrambler.nextInt(wordLength); 
 										
 										if (countWord == countJumble){
@@ -163,10 +175,11 @@ public class Proj4 {
 		else if (inputLetter == 'n'){
 			wordFromArray = wordSelector.nextInt(numOfWords); //Select new word
 			wordFromFile = wordList[wordFromArray];
+			wordLength = wordFromFile.length();
 			
 			for(countWord = 0; countWord < wordLength; countWord++) {
 				
-				tempLetter = wordFromFile.charAt(countWord); //ERROR HERE
+				tempLetter = wordFromFile.charAt(countWord); 
 				countJumble = wordScrambler.nextInt(wordLength); 
 				
 				if (countWord == countJumble){
@@ -189,7 +202,8 @@ public class Proj4 {
 			for(countWord = 0; countWord < checkPlace.length; countWord++)
 			{ checkPlace[countWord] = false; }
 			
-			
+			currentScore = 10; 
+
 			}
 		else if (inputLetter == 'h'){
 				hint = hintGiver.nextInt(wordFromFile.length());
@@ -203,7 +217,7 @@ public class Proj4 {
 			{
 				System.out.println("Goodbye!");
 				System.out.println("Final Score: " + totalScore);
-				System.exit(0);
+				//System.exit(0);
 			}
 		else 
 			{ 
