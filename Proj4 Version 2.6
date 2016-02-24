@@ -1,6 +1,6 @@
 
-// Proj4.java												//								//
-// AJ Snow / Lab Section C / Fridays 3:30 - 5:30 			//									//
+// Proj4.java												//								
+// AJ Snow / Lab Section C / Fridays 3:30 - 5:30 			//						
 // This project is a word scrambler							//
 // program. It takes a given word from						//
 // a file, randomizes the letters, and 						//	
@@ -108,7 +108,7 @@ public class Proj4 {
 			System.out.println(wordFromFile);
 			System.out.print("Current points for word: " + currentScore);
 			System.out.println();
-			System.out.print("To begin. Enter (g)uess, (h)int, (n)ew word, or (q)uit: "); 
+			System.out.print("To begin, Enter (g)uess, (h)int, (n)ew word, or (q)uit: "); 
 			inputWord = keyboard.nextLine().toLowerCase(); 
 			inputLetter = inputWord.charAt(0); 
 			
@@ -134,7 +134,7 @@ public class Proj4 {
 									wordFromArray = wordSelector.nextInt(numOfWords); //Select new word
 									wordFromFile = wordList[wordFromArray]; 
 									wordLength = wordFromFile.length();
-									jumbledWord = new char[wordFromFile.length()]; //THIS OK? 
+									jumbledWord = new char[wordLength]; 
 									
 									for(countWord = 0; countWord < wordLength; countWord++) {
 										
@@ -155,6 +155,7 @@ public class Proj4 {
 										else { countWord--; }
 										
 									}//end for loop randomizer
+									
 									countWord = 0; 
 									for(countWord = 0; countWord < checkPlace.length; countWord++)
 									{ checkPlace[countWord] = false; }
@@ -175,7 +176,7 @@ public class Proj4 {
 			wordFromArray = wordSelector.nextInt(numOfWords); //Select new word
 			wordFromFile = wordList[wordFromArray];
 			wordLength = wordFromFile.length();
-			jumbledWord = new char[wordFromFile.length()];
+			jumbledWord = new char[wordLength];
 			
 			for(countWord = 0; countWord < wordLength; countWord++) {
 				
