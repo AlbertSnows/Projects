@@ -12,34 +12,18 @@ public class Proj5 {
 	Scanner keyboard = new Scanner(System.in); 	
 	File results = new File("Results.txt"); 
 	PrintWriter outputFile = new PrintWriter(results);
-	File newFile; 
 	String filename; 
-
+	File newFile; 
 	
 	
 	
 	//ask the user for the text file, if not exists display an error 
 	//have them enter the file name until a valid file is entered
 	//boolean fileExists = false; 
-		
-
-	do { 
-		
-		System.out.print("Enter in the file name: "); 
-		filename= keyboard.nextLine();  
-		newFile = new File (filename); 
-		
-		
-		if (newFile.exists()){
-			System.out.println("File exists!"); 
-		}
-		else {
-			System.out.println("Error! File does not exist! Try again"); 
-		}
-		
-	  } while (!newFile.exists());   
- 
 	
+	filename = fileName(); 
+	System.out.println("Filename: " + filename);
+	newFile = newFile(filename); 
 	
 	//ask how many questions were on the exam and the number of points per person
 	//allows the user to create an answer key that will be used to grade the exams
@@ -49,19 +33,19 @@ public class Proj5 {
 	double numOfQuestions;
 	numOfQuestions = Double.parseDouble(input); 
 	
-	int answerKeyLength = Integer.parseInt(input);
-	int[] answerKey = new int[answerKeyLength]; 					//Declares size of integer array for the answer key
-	
-	System.out.print("Enter the number of points per person"); 
+	System.out.print("Enter the number of points per person: "); 
 	input = keyboard.nextLine(); 
-	//input = pointsPerPerson(); 
 	int pointsPerP = Integer.parseInt(input); 		    //Declares the points per person
 
-
+	int answerKeyLength = answerKeyLength(numOfQuestions); 
+	System.out.println("Answer Key length: " + answerKeyLength); 
+	int[] answerKey = answerKey(answerKeyLength); 
+	
+	
+	System.out.println("Question 1"); 
 	//user can enter t or f or answers a-e for multiple choice. 
 	int count = 0; 
 	for (count = 0; count < numOfQuestions; count++){
-		System.out.println("Question " + (count+1)); 
 		System.out.println("Enter 't' or 'f' for true or false.");
 		System.out.println("Enter letters 'a' through 'e' for multiple choice.");
 		System.out.print("Enter the correct answer here: ");
@@ -94,7 +78,10 @@ public class Proj5 {
 			break; 
 		default: 
 			System.out.println("Error, unrecognized value entered.");
+			if (count > 0){
 			count--; 
+			}
+			else {count = 0;}
 			break; 
 		}
 		
@@ -103,6 +90,9 @@ public class Proj5 {
 		
 		//number of answers is dependent on the number of questions
 		answerKey[count] = correctAnswer; 
+		System.out.println();
+		
+		System.out.println("Question " + (count+1)); 
 	}
 	
 	
@@ -255,25 +245,45 @@ delimiter.close();
 	
 	fileReader.close(); 
 	outputFile.close(); 
-	keyboard.close(); 	
+	//keyboard.close(); 	
 	}//end main
 
+	public static String fileName(){
+		String filename; 
+		Scanner inputFile = new Scanner (System.in); 
+		File newFile; 
+
+		do { 
+			System.out.print("Enter in the file name: "); 
+			filename= inputFile.nextLine();  
+			newFile = new File (filename); 
+			if (newFile.exists()){
+				System.out.println("File exists!"); 
+			}
+			else {
+				System.out.println("Error! File does not exist! Try again"); 
+			}
+		  } while (!newFile.exists());   
+		//inputFile.close(); 
+		return filename; 
+		}
+	
+	public static File newFile(String filename){
+		File newFile; 
+		newFile = new File (filename); 
+		return newFile; 
+	}
 	
 	
-	//public static String pointsPerPerson(){
-	//String pointsPerPerson; 
-	//Scanner keyboard = new Scanner(System.in); 
-	//System.out.print("Enter the number of points per person: ");
-	//pointsPerPerson = keyboard.nextLine(); 
+	public static int answerKeyLength(double numOfQuestions){
+		int answerKeyLength = (int)numOfQuestions;  
+		return answerKeyLength; 
+	}
 	
-	//keyboard.close(); 
-	//return pointsPerPerson; 
-	//}//end PPP method
+	
+	public static int[] answerKey(int answerKeyLength){
+	int[] answerKey = new int[answerKeyLength]; 					//Declares size of integer array for the answer key	
+	return answerKey; 
+	}
+	
 }//end class
-
-
-
-
-
-
-
