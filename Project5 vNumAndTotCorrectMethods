@@ -38,62 +38,28 @@ public class Proj5 {
 	int pointsPerP = Integer.parseInt(input); 		    //Declares the points per person
 
 	int answerKeyLength = answerKeyLength(numOfQuestions); 
-	System.out.println("Answer Key length: " + answerKeyLength); 
+	//System.out.println("Answer Key length: " + answerKeyLength); 
 	int[] answerKey = answerKey(answerKeyLength); 
 	
-	
-	System.out.println("Question 1"); 
-	//user can enter t or f or answers a-e for multiple choice. 
 	int count = 0; 
+	//System.out.println("Question " + (count+1)); 
+	//user can enter t or f or answers a-e for multiple choice. 
+	char answer = 0; 
+	int correctAnswer = 0; 
 	for (count = 0; count < numOfQuestions; count++){
-		System.out.println("Enter 't' or 'f' for true or false.");
-		System.out.println("Enter letters 'a' through 'e' for multiple choice.");
-		System.out.print("Enter the correct answer here: ");
-		input = keyboard.nextLine();
-		input = input.toLowerCase(); 
-		char answer = input.charAt(0); 
-		
-		int correctAnswer = 0; 
-		switch (answer){
-		case 't': 
-			correctAnswer = 1; 
-			break; 
-		case 'f': 
-			correctAnswer = 2; 
-			break; 
-		case 'a': 
-			correctAnswer = 1;
-			break; 
-		case 'b': 
-			correctAnswer = 2; 
-			break; 
-		case 'c': 
-			correctAnswer = 3;
-			break; 
-		case 'd': 
-			correctAnswer = 4; 
-			break; 
-		case 'e': 
-			correctAnswer = 5; 
-			break; 
-		default: 
-			System.out.println("Error, unrecognized value entered.");
-			if (count > 0){
-			count--; 
-			}
-			else {count = 0;}
-			break; 
-		}
-		
-		
-		System.out.println(); 
-		
-		//number of answers is dependent on the number of questions
-		answerKey[count] = correctAnswer; 
-		System.out.println();
-		
-		System.out.println("Question " + (count+1)); 
-	}
+
+	     if (correctAnswer == 0)
+	     { if (count >= 1){count--; }
+		   else {count = 0;}		
+		 }
+		 System.out.println("Question " + (count+1)); 
+		 
+		answer = getAnswer(); 
+		correctAnswer = answerToNum(answer, count, answerKey, correctAnswer); 
+	     //System.out.println("CorrectAnswer out of method: " + correctAnswer); 
+	     //System.out.println("Count out of method: " + count); 
+
+	}//end for
 	
 	
 
@@ -103,7 +69,7 @@ public class Proj5 {
 	//5 students
 	String[] wID = new String[50];									//Used to hold the values of tests and the students wID
 	int[][] studentAnswers = new int[answerKeyLength][50]; 
-	int countAnswers;
+	int countAnswers = 0;
 	int numOfStudents = 0; 
 	Scanner fileReader = new Scanner (new FileReader(filename)); 
 	
@@ -113,6 +79,7 @@ public class Proj5 {
 		String fileLine = fileReader.nextLine(); 
 		Scanner delimiter = new Scanner(fileLine);
 		
+
 		delimiter.useDelimiter(",");
 		String ID = delimiter.next(); 
 		wID[count] = ID; 
@@ -121,13 +88,10 @@ public class Proj5 {
 		String answers = delimiter.next(); 
 		//System.out.println("Students answers: " + answers); 
 	
-		for (countAnswers = 0; countAnswers < numOfQuestions; countAnswers++){ 	
-			int number = Character.getNumericValue(answers.charAt(countAnswers)); 
-			
-			//System.out.println("Student's answer to this question: " + number); 
-			studentAnswers[countAnswers][count] = (number); 
+		countAns(countAnswers, numOfQuestions, answers, studentAnswers, count); 
+	
+	
 		
-		}
 numOfStudents++; 		
 count++; 
 delimiter.close(); 
@@ -155,11 +119,8 @@ delimiter.close();
 		
 		for (count = 0; count < numOfQuestions; count++){
 			
-			if (studentAnswers[count][index] == answerKey[count]){
-				numberCorrect++; 
-				totalCorrect++; 	
-			}
-			
+			numCorrect(studentAnswers,count,index,answerKey,numberCorrect); //records total number correct for student and class 
+			totCorrect(studentAnswers,count,index,answerKey, totalCorrect); //records total number correct for student and class 
 			
 		}
 	
@@ -285,5 +246,84 @@ delimiter.close();
 	int[] answerKey = new int[answerKeyLength]; 					//Declares size of integer array for the answer key	
 	return answerKey; 
 	}
+	
+	public static char getAnswer(){
+		Scanner getAns = new Scanner(System.in); 
+		String inputAns; 
+		 
+		System.out.println("Enter 't' or 'f' for true or false.");
+		System.out.println("Enter letters 'a' through 'e' for multiple choice.");
+		System.out.print("Enter the correct answer here: ");
+		inputAns = getAns.nextLine();
+		inputAns = inputAns.toLowerCase(); 
+		char answer = inputAns.charAt(0); 
+		return answer; 
+		}
+	
+	public static int answerToNum(char answer, int count, int[] answerKey, int correctAnswer){
+		
+		
+			switch (answer){
+			case 't': 
+				correctAnswer = 1; 
+				break; 
+			case 'f': 
+				correctAnswer = 2; 
+				break; 
+			case 'a': 
+				correctAnswer = 1;
+				break; 
+			case 'b': 
+				correctAnswer = 2; 
+				break; 
+			case 'c': 
+				correctAnswer = 3;
+				break; 
+			case 'd': 
+				correctAnswer = 4; 
+				break; 
+			case 'e': 
+				correctAnswer = 5; 
+				break; 
+			default: 
+				System.out.println("Error, unrecognized value entered.");
+				correctAnswer = 0; 
+				break; 
+			}
+			
+			
+			System.out.println(); 
+			
+			//number of answers is dependent on the number of questions
+			answerKey[count] = correctAnswer; 
+			System.out.println();
+			
+			return correctAnswer; 
+	}
+	
+	public static void countAns(int countAnswers, double numOfQuestions, String answers, int[][] studentAnswers, int count){
+		for (countAnswers = 0; countAnswers < numOfQuestions; countAnswers++){ 	
+			int number = Character.getNumericValue(answers.charAt(countAnswers)); 
+			
+			//System.out.println("Student's answer to this question: " + number); 
+			studentAnswers[countAnswers][count] = (number); 
+		}
+	   }//end method
+
+	public static int numCorrect(int[][] studentAnswers, int count, int index, int[] answerKey, int numberCorrect){
+		  if (studentAnswers[count][index] == answerKey[count]){
+			numberCorrect++; 
+			
+			return numberCorrect; 
+		}
+	   }	
+	
+	public static int totCorrect(int[][] studentAnswers, int count, int index, int[] answerKey, int totalCorrect){
+		  if (studentAnswers[count][index] == answerKey[count]){
+			totalCorrect++; 	
+			
+			return totalCorrect; 
+		  }
+	   }	
 	
 }//end class
