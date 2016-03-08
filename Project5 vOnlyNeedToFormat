@@ -1,0 +1,460 @@
+package projects; 
+// Proj4.java												//								
+// AJ Snow / Lab Section C / Fridays 3:30 - 5:30 			//						
+// 															//	
+
+
+import java.util.*;
+import java.io.*; 
+
+public class Proj5 {
+	public static void main (String[] args) throws IOException{
+	
+	String input; 
+	String filename; 
+
+	Scanner keyboard 		= new Scanner(System.in); 	
+	File results 			= new File("Results.txt"); 
+	PrintWriter outputFile  = new PrintWriter(results);
+	
+	
+	
+///\/ask the user for the text file, if not exists display an error \/\\\
+///\/have them enter the file name until a valid file is entered	\/\\\
+	
+	filename = fileName(); 
+  //System.out.println("Filename: " + filename);
+  //File newFile = newFile(filename); 
+	
+	
+////\_______________________________________________________________/\\\\
+	
+
+///\/ask how many questions were on the exam and the number of points per person  \/\\\
+///\/allows the user to create an answer key that will be used to grade the exams  \/\\\
+	double numOfQuestions;
+	int pointsPerP; 
+	int answerKeyLength; 
+	int[] answerKey; 
+	int count; 
+	
+	
+	System.out.print("Enter how many questions were on the exam: "); 
+	input = keyboard.nextLine(); 
+	numOfQuestions = Double.parseDouble(input); 
+	
+	
+	answerKeyLength = answerKeyLength(numOfQuestions); 						 //Determines length of answer key
+	answerKey = answerKey(answerKeyLength); 
+
+	
+	System.out.print("Enter the number of points per person: "); 
+	input = keyboard.nextLine(); 
+	pointsPerP = Integer.parseInt(input); 		   							 //Declares the points per person
+
+  //System.out.println("Answer Key length: " + answerKeyLength); 
+	
+	count = 0; 
+  //System.out.println("Question " + (count+1)); 
+	
+////\____________________________________________________________________________/\\\\
+	
+	
+///\/user can enter t or f or answers a-e for multiple choice. \/\\\
+	char answer = 0; 
+	int correctAnswer = 0; 
+	
+	for (count = 0; count < numOfQuestions; count++){
+
+	     if (correctAnswer == 0)
+	     { if (count >= 1){count--; }
+		   else {count = 0;}		
+		 }
+	     
+	     
+	   //System.out.println("Question " + (count+1)); 
+	     System.out.print((count+1) + ") "); 
+
+		answer = getAnswer(); 
+		correctAnswer = answerToNum(answer, count, answerKey, correctAnswer); 
+		
+		
+	  //System.out.println("CorrectAnswer out of method: " + correctAnswer); 
+	  //System.out.println("Count out of method: " + count); 
+
+	}//end for
+	
+////\___________________________________________________________________________/\\\\
+	
+	
+///\/read in the scantron generated text file QuizScores.txt \/\\\
+	Scanner fileReader; 
+	Scanner delimiter; 
+	String[] wID;
+	String fileLine;
+	String ID; 
+	String answers; 
+	
+	int[][] studentAnswers; 
+	int countAnswers = 0;
+	int numOfStudents = 0; 
+
+	
+	
+	studentAnswers = new int[answerKeyLength][50]; 
+	wID = new String[50];								//Used to hold the values of tests and the students wID
+
+	fileReader = new Scanner (new FileReader(filename)); 
+	
+	
+	count = 0; 
+	while (fileReader.hasNext())
+	 {	
+		
+		fileLine = fileReader.nextLine(); 
+		delimiter = new Scanner(fileLine);
+		
+
+		delimiter.useDelimiter(",");
+		ID = delimiter.next(); 
+		wID[count] = ID; 
+		
+	  //System.out.println(wID[count]); 		     
+		
+		
+		answers = delimiter.next(); 					//Prints outs a string of numbers that are the students answers
+		
+		
+	  //System.out.println("Students answers: " + answers); 
+	
+	  //This method is used to separate the answers string and put the values of each answer into studentAnswers appropriately 
+		countAns(countAnswers, numOfQuestions, answers, studentAnswers, count); 
+	
+	
+		
+numOfStudents++; 		
+count++; 
+delimiter.close(); 
+
+	  }//end file reader has next loop	
+	
+	
+////\______________________________________________________/\\\\
+	
+
+///\/ grade the quizzes and display each student WID number \/\\\
+
+	int index; 
+	int highScore		  = 0; 
+	int totalCorrect 	  = 0; 
+	int lowScore = (answerKeyLength+1); 
+	double percentCorrect = 0; 
+	char grade 			  = 0; 
+	
+	for (index = 0; index < numOfStudents; index++)
+	 {
+		int numberCorrect = 0; 
+		
+		System.out.print("Student ID: " + wID[index]);
+		System.out.println(); 
+		
+		for (count = 0; count < numOfQuestions; count++)
+		 {
+			
+			//records total number correct for student and class 
+			 numberCorrect = numCorrect(studentAnswers, count, index, answerKey, numberCorrect); 
+			//records total number correct for student and class 
+			 totalCorrect = totCorrect(studentAnswers, count, index, answerKey, totalCorrect); 
+			
+		 }//end number and total correct counter loop
+////\________________________________________________________/\\\\
+	
+		
+///\/print the correct number of answers , percentage correct to one decimal\/\\\
+		double studentScore; 
+		
+		
+		System.out.print("Number correct: " + numberCorrect + "\n"); 
+		
+		
+		percentCorrect = percentCalculator(numberCorrect, numOfQuestions); 
+		studentScore = (numberCorrect * pointsPerP);
+		
+		printInfo(percentCorrect, studentScore, numberCorrect, pointsPerP); 
+		
+		highScore = isNumHigher(numberCorrect, highScore); 
+		lowScore = isNumLower(numberCorrect, lowScore); 
+		grade = gradeResult(percentCorrect, grade); 
+		
+		
+		System.out.println(); 
+		
+////\___________________________________________________________________/\\\\
+		
+		
+/////create a comma delimited text file called results.txt containing		   \\\\\
+///\/only the WID, #correct, %correct, score, and grade, one student per line.  \/\\\ 
+		
+ 
+  writeToFile(wID, index, numberCorrect, percentCorrect, studentScore, grade, outputFile); 
+
+  
+	  }//END NUMOFSTUDENTS FOR LOOP
+	
+	
+////\____________________________________________________________________________/\\\\
+	
+	
+	
+System.out.println(); 
+
+///\/and their grade based on the percent correct  \////
+///\/display the class average on quiz to 1 decimal \////
+	double classAvg = 0;
+ 
+	
+	classAvg = calcClassAvg(totalCorrect, numOfStudents, numOfQuestions, classAvg); 
+	grade = calcClassGrade(classAvg, grade); 
+
+	printClassAvgAndScores(classAvg, grade, highScore, lowScore); 
+ 
+ 
+
+	
+  fileReader.close(); 
+  outputFile.close(); 
+  keyboard.close(); 	
+	
+////\_______________________________________________/\\\\	
+	
+	}//END MAIN
+
+	
+	
+	public static String fileName(){
+		String filename; 
+		Scanner inputFile = new Scanner (System.in); 
+		File newFile; 
+
+		do { 
+			System.out.print("Enter in the file name: "); 
+			filename= inputFile.nextLine();  
+			newFile = new File (filename); 
+			if (newFile.exists()){
+				System.out.println("File exists!"); 
+			}
+			else {
+				System.out.println("Error! File does not exist! Try again"); 
+			}
+		  } while (!newFile.exists());   
+		//inputFile.close(); 
+		return filename; 
+		}
+	
+	public static File newFile(String filename){
+		File newFile; 
+		newFile = new File (filename); 
+		return newFile; 
+	}
+	
+	
+	public static int answerKeyLength(double numOfQuestions){
+		int answerKeyLength = (int)numOfQuestions;  
+		return answerKeyLength; 
+	}
+	
+	
+	public static int[] answerKey(int answerKeyLength){
+	int[] answerKey = new int[answerKeyLength]; 					//Declares size of integer array for the answer key	
+	return answerKey; 
+	}
+	
+	public static char getAnswer(){
+		Scanner getAns = new Scanner(System.in); 
+		String inputAns; 
+		 
+		//System.out.println("Enter 't' or 'f' for true or false.");
+		//System.out.println("Enter letters 'a' through 'e' for multiple choice.");
+		//System.out.print("Enter the correct answer here: ");
+		inputAns = getAns.nextLine();
+		inputAns = inputAns.toLowerCase(); 
+		char answer = inputAns.charAt(0); 
+		return answer; 
+		}
+	
+	public static int answerToNum(char answer, int count, int[] answerKey, int correctAnswer){
+		
+		
+			switch (answer){
+			case 't': 
+				correctAnswer = 1; 
+				break; 
+			case 'f': 
+				correctAnswer = 2; 
+				break; 
+			case 'a': 
+				correctAnswer = 1;
+				break; 
+			case 'b': 
+				correctAnswer = 2; 
+				break; 
+			case 'c': 
+				correctAnswer = 3;
+				break; 
+			case 'd': 
+				correctAnswer = 4; 
+				break; 
+			case 'e': 
+				correctAnswer = 5; 
+				break; 
+			default: 
+				System.out.println("Error, unrecognized value entered.");
+				correctAnswer = 0; 
+				break; 
+			}
+			
+			
+			
+			//number of answers is dependent on the number of questions
+			answerKey[count] = correctAnswer; 
+			//System.out.println();
+			
+			return correctAnswer; 
+	}
+	
+	
+//\/ METHOD TO COUNT ANSWERS \/\\   	
+public static void countAns(int countAnswers, double numOfQuestions, String answers, int[][] studentAnswers, int count)
+	 {
+		int number; 
+		int numValOfAnswer; 
+		char atCountAnswers;
+		
+		for (countAnswers = 0; countAnswers < numOfQuestions; countAnswers++)
+		 { 	
+			atCountAnswers = answers.charAt(countAnswers); 					//This grabs the value at the spot countAnswers is checking
+		  //System.out.println("Answer at count answer: " + atCountAnswers); 
+			numValOfAnswer = Character.getNumericValue(atCountAnswers); 	//This converts the value to a numeric one so it can be analyzed, not sure if needed
+		  //System.out.println("Value of character: " + numValOfAnswer); 
+			number = numValOfAnswer; 										//This is mostly useless but kind of helps simplify things
+		  //System.out.println("Number: " + number); 
+			
+			
+		  //System.out.println("Student's answer to this question: " + number); 
+			studentAnswers[countAnswers][count] = (number); 
+			
+			
+		 }//end count answers for loop
+		
+	 }//end method to count answers
+///\________________________/\\\
+	
+	
+	public static int numCorrect (int[][] studentAnswers, int count, int index, int[] answerKey, int numberCorrect){
+		
+		  if (studentAnswers[count][index] == answerKey[count]){
+			numberCorrect++; 
+			
+		  }
+		  
+		return numberCorrect; 
+	   }//end numcorrect
+	
+	public static int totCorrect(int[][] studentAnswers, int count, int index, int[] answerKey, int totalCorrect){
+		
+		  if (studentAnswers[count][index] == answerKey[count]){
+			totalCorrect++; 	
+			
+		  }
+		return totalCorrect; 
+	   }//end total correct
+	
+	  
+	 public static double percentCalculator(int numberCorrect, double numOfQuestions)
+	  {
+	  	double percentCorrect = ((numberCorrect/numOfQuestions)*100);
+	  	return percentCorrect; 
+	  }
+	
+	 public static void printInfo(double percentCorrect, double studentScore, int numberCorrect, int pointsPerP){
+			System.out.printf("Percentage correct: %.1f",  percentCorrect); 
+			System.out.print("%"); 
+			System.out.println(); 
+			System.out.print("Student's score: " + (studentScore)); 
+			System.out.println(); 
+			}
+	 
+	 public static int isNumHigher(int numberCorrect, int highScore){
+			if (numberCorrect > highScore){
+				highScore = numberCorrect;
+			}
+			return highScore; 
+	 }
+			
+			public static int isNumLower(int numberCorrect, int lowScore){
+			if (numberCorrect < lowScore){
+				lowScore = numberCorrect; 
+			}
+			return lowScore; 
+	}
+	 
+	public static char gradeResult(double percentCorrect, char grade){
+		if (percentCorrect < 60.0) { grade = 'F'; System.out.println("Grade: " + grade);}
+		else if (percentCorrect < 70.0) { grade = 'D'; System.out.println("Grade: " + grade);} 
+		else if (percentCorrect < 80.0) { grade = 'C'; System.out.println("Grade: " + grade);}
+		else if (percentCorrect < 90.0) { grade = 'B'; System.out.println("Grade: " + grade);}
+		else { grade = 'A'; System.out.println("Grade: " + grade);}
+	
+		return grade; 
+	}		
+
+
+///\/ METHOD TO WRITE INFORMATION TO NEW RESULTS FILE \/\\\	
+public static void writeToFile(String[] wID, int index, int numberCorrect, double percentCorrect, double studentScore, char grade, PrintWriter outputFile)
+	 {
+		outputFile.print(wID[index] + "," + numberCorrect + ","); 
+		outputFile.print(percentCorrect + "," + studentScore + "," + grade); 
+		outputFile.println(); 
+	 }
+////\__________________________________________________/\\\\\
+
+
+///\/ METHOD TO CLACULATE TOTAL CLASS AVERAGE \/\\\	
+public static double calcClassAvg(int totalCorrect, int numOfStudents, double numOfQuestions, double classAvg)
+ {
+		 classAvg = (totalCorrect/(numOfStudents*numOfQuestions)*100); 
+		 return classAvg; 
+ }
+////\_________________________________________/\\\\\
+
+
+///\/ METHOD TO CLACULATE CLASS GRADE \/\\\	
+public static char calcClassGrade(double classAvg, char grade)
+ {
+		 if      (classAvg < 60.0) { grade = 'F'; }
+		 else if (classAvg < 70.0) { grade = 'D'; } 
+		 else if (classAvg < 80.0) { grade = 'C'; }
+		 else if (classAvg < 90.0) { grade = 'B'; }
+		 else 					   { grade = 'A'; }
+		
+		 System.out.println(); 
+			
+	return grade; 
+ }
+////\_________________________________/\\\\\	
+
+///\/ METHOD TO PRINT THE CLASSES AVERAGES AND SCORES \/\\\	
+public static void printClassAvgAndScores(double classAvg, char grade, int highScore, int lowScore)
+ {
+		System.out.printf ("Average : %.1f", classAvg); 
+		System.out.println("% (" + grade  + ")");
+		System.out.println("High Score: " + (highScore*2));
+		System.out.println("Low Score: "  + (lowScore*2)); 
+		System.out.println();
+		System.out.println("Results.txt File created...");
+ }
+////\________________________________________________/\\\\\	
+
+
+
+}//end class
