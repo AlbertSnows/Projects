@@ -230,61 +230,90 @@ System.out.println();
 	}//END MAIN
 
 	
+///\/ METHOD TO GET A FILE FROM THE USER\/\\\
+public static String fileName()
+ {
+	File newFile; 
+	String filename; 
+	Scanner inputFile = new Scanner (System.in); 
 	
-	public static String fileName(){
-		String filename; 
-		Scanner inputFile = new Scanner (System.in); 
-		File newFile; 
-
-		do { 
+		do 
+		 { 
 			System.out.print("Enter in the file name: "); 
 			filename= inputFile.nextLine();  
 			newFile = new File (filename); 
-			if (newFile.exists()){
-				System.out.println("File exists!"); 
-			}
-			else {
-				System.out.println("Error! File does not exist! Try again"); 
-			}
-		  } while (!newFile.exists());   
-		//inputFile.close(); 
-		return filename; 
-		}
-	
-	public static File newFile(String filename){
-		File newFile; 
-		newFile = new File (filename); 
-		return newFile; 
-	}
+			
+			if (newFile.exists()){ System.out.println("File exists!"); }
+			else { 				   System.out.println("Error! File does not exist! Try again"); }
+			
+		 } while (!newFile.exists());   
+		
+  //inputFile.close(); 	
+	return filename; 
+ }
+///\_________________________________/\\\
 	
 	
-	public static int answerKeyLength(double numOfQuestions){
-		int answerKeyLength = (int)numOfQuestions;  
-		return answerKeyLength; 
-	}
+///\/ METHOD TO CREATE A NEW FILENAME\/\\\
+public static File newFile(String filename)
+ {
+	File newFile; 
+	
+	newFile = new File (filename); 
+	
+	return newFile; 
+ }
+///\_________________________________/\\\
+	
+
+///\/ METHOD TO GET ANSWER KEY LENGTH\/\\\
+public static int answerKeyLength(double numOfQuestions)
+ {
+	int answerKeyLength; 
+	
+	answerKeyLength = (int)numOfQuestions;  
+	
+	return answerKeyLength; 
+ }
+///\_________________________________/\\\
 	
 	
-	public static int[] answerKey(int answerKeyLength){
-	int[] answerKey = new int[answerKeyLength]; 					//Declares size of integer array for the answer key	
+///\/ METHOD TO CREATE A NEW ANSWERKEY\/\\\	
+public static int[] answerKey(int answerKeyLength)
+ {
+	int[] answerKey; 
+	
+	answerKey = new int[answerKeyLength]; 					//Declares size of integer array for the answer key	
+	
 	return answerKey; 
-	}
+ }
+///\_________________________________/\\\
+
 	
-	public static char getAnswer(){
-		Scanner getAns = new Scanner(System.in); 
-		String inputAns; 
+///\/ METHOD TO GET THE ANSWER KEY FROM THE USER\/\\\
+public static char getAnswer()
+ {
+	char answer; 
+	Scanner getAns = new Scanner(System.in); 
+	String inputAns; 
 		 
 		//System.out.println("Enter 't' or 'f' for true or false.");
 		//System.out.println("Enter letters 'a' through 'e' for multiple choice.");
 		//System.out.print("Enter the correct answer here: ");
+		
 		inputAns = getAns.nextLine();
 		inputAns = inputAns.toLowerCase(); 
-		char answer = inputAns.charAt(0); 
-		return answer; 
-		}
+		answer = inputAns.charAt(0); 
+		
+	return answer; 
+ }//end get answers method
+///\_____________________________________________/\\\
+
 	
-	public static int answerToNum(char answer, int count, int[] answerKey, int correctAnswer){
-		
-		
+///\/ METHOD TO CHANGE ANSWERS KEY LETTERS TO NUMBERS \/\\\
+public static int answerToNum(char answer, int count, int[] answerKey, int correctAnswer)
+ {
+
 			switch (answer){
 			case 't': 
 				correctAnswer = 1; 
@@ -313,19 +342,17 @@ System.out.println();
 				break; 
 			}
 			
-			
-			
 			//number of answers is dependent on the number of questions
 			answerKey[count] = correctAnswer; 
-			//System.out.println();
-			
-			return correctAnswer; 
-	}
-	
+						
+	return correctAnswer; 
+}//end answers to numbers method
+///\_________________________________________________/\\\
+
 	
 //\/ METHOD TO COUNT ANSWERS \/\\   	
 public static void countAns(int countAnswers, double numOfQuestions, String answers, int[][] studentAnswers, int count)
-	 {
+ {
 		int number; 
 		int numValOfAnswer; 
 		char atCountAnswers;
@@ -346,67 +373,91 @@ public static void countAns(int countAnswers, double numOfQuestions, String answ
 			
 		 }//end count answers for loop
 		
-	 }//end method to count answers
+ }//end method to count answers
 ///\________________________/\\\
 	
-	
-	public static int numCorrect (int[][] studentAnswers, int count, int index, int[] answerKey, int numberCorrect){
+
+///\/ METHOD TO FIND THE TOTAL CORRECT ANSWERS FOR STUDENT\/\\\	
+public static int numCorrect (int[][] studentAnswers, int count, int index, int[] answerKey, int numberCorrect)
+  {
 		
-		  if (studentAnswers[count][index] == answerKey[count]){
-			numberCorrect++; 
-			
-		  }
+		  if (studentAnswers[count][index] == answerKey[count]){ numberCorrect++; }
 		  
-		return numberCorrect; 
-	   }//end numcorrect
-	
-	public static int totCorrect(int[][] studentAnswers, int count, int index, int[] answerKey, int totalCorrect){
+	return numberCorrect; 
+ }//end numcorrect
+////\_____________________________________________________/\\\\\
+
+
+///\/ METHOD TO FIND THE TOTAL CORRECT ANSWERS\/\\\	
+public static int totCorrect(int[][] studentAnswers, int count, int index, int[] answerKey, int totalCorrect)
+ {
 		
-		  if (studentAnswers[count][index] == answerKey[count]){
-			totalCorrect++; 	
-			
-		  }
-		return totalCorrect; 
-	   }//end total correct
+		  if (studentAnswers[count][index] == answerKey[count]) { totalCorrect++; }
+		  
+	return totalCorrect; 
+ }//end total correct
+////\________________________________________/\\\\\
 	
-	  
-	 public static double percentCalculator(int numberCorrect, double numOfQuestions)
-	  {
-	  	double percentCorrect = ((numberCorrect/numOfQuestions)*100);
-	  	return percentCorrect; 
-	  }
+
+///\/ METHOD TO CALCULATE STUDENTS PERCENTAGE\/\\\	
+public static double percentCalculator(int numberCorrect, double numOfQuestions)
+ {
+	double percentCorrect; 
 	
-	 public static void printInfo(double percentCorrect, double studentScore, int numberCorrect, int pointsPerP){
+	  	percentCorrect = ((numberCorrect/numOfQuestions)*100);
+	  	
+	return percentCorrect; 
+ }
+////\_______________________________________/\\\\\
+
+	 
+///\/ METHOD TO PRINT STUDENT'S INFORMATION\/\\\	
+public static void printInfo(double percentCorrect, double studentScore, int numberCorrect, int pointsPerP)
+ {
 			System.out.printf("Percentage correct: %.1f",  percentCorrect); 
 			System.out.print("%"); 
 			System.out.println(); 
+			
 			System.out.print("Student's score: " + (studentScore)); 
 			System.out.println(); 
-			}
+ }
+////\_____________________________________/\\\\\
+	
 	 
-	 public static int isNumHigher(int numberCorrect, int highScore){
-			if (numberCorrect > highScore){
-				highScore = numberCorrect;
-			}
-			return highScore; 
-	 }
+///\/ METHOD TO FIND HIGH SCORE \/\\\		
+public static int isNumHigher(int numberCorrect, int highScore)
+ {
+	
+			if (numberCorrect > highScore) { highScore = numberCorrect; }
 			
-			public static int isNumLower(int numberCorrect, int lowScore){
-			if (numberCorrect < lowScore){
-				lowScore = numberCorrect; 
-			}
-			return lowScore; 
-	}
-	 
-	public static char gradeResult(double percentCorrect, char grade){
-		if (percentCorrect < 60.0) { grade = 'F'; System.out.println("Grade: " + grade);}
+	return highScore; 
+ }
+////\___________________________/\\\\\
+
+
+///\/ METHOD TO FIND LOW  SCORE \/\\\		
+public static int isNumLower(int numberCorrect, int lowScore)
+ {
+	
+			if (numberCorrect < lowScore){ lowScore = numberCorrect; }
+			
+	return lowScore; 
+ }
+////\__________________________/\\\\\
+			
+			
+///\/ METHOD TO CLACULATE GRADE RESULT FOR STUDENT \/\\\		
+public static char gradeResult(double percentCorrect, char grade)
+ {
+		if (percentCorrect < 60.0)      { grade = 'F'; System.out.println("Grade: " + grade);}
 		else if (percentCorrect < 70.0) { grade = 'D'; System.out.println("Grade: " + grade);} 
 		else if (percentCorrect < 80.0) { grade = 'C'; System.out.println("Grade: " + grade);}
 		else if (percentCorrect < 90.0) { grade = 'B'; System.out.println("Grade: " + grade);}
-		else { grade = 'A'; System.out.println("Grade: " + grade);}
+		else 							{ grade = 'A'; System.out.println("Grade: " + grade);}
 	
-		return grade; 
-	}		
+	return grade; 
+ }		
+////\__________________________________________/\\\\\
 
 
 ///\/ METHOD TO WRITE INFORMATION TO NEW RESULTS FILE \/\\\	
@@ -442,6 +493,7 @@ public static char calcClassGrade(double classAvg, char grade)
 	return grade; 
  }
 ////\_________________________________/\\\\\	
+
 
 ///\/ METHOD TO PRINT THE CLASSES AVERAGES AND SCORES \/\\\	
 public static void printClassAvgAndScores(double classAvg, char grade, int highScore, int lowScore)
